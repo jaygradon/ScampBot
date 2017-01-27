@@ -1,0 +1,2 @@
+# ScampBot
+Personal Discord Bot
