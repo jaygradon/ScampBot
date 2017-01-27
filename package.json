@@ -1,0 +1,26 @@
+{
+  "name": "scampbot",
+  "version": "0.0.1",
+  "description": "Chatbot for Discord",
+  "main": "scamp.js",
+  "scripts": {
+    "start": "node src/scamp.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaygradon/ScampBot.git"
+  },
+  "author": "Jay Gradon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jaygradon/ScampBot/issues"
+  },
+  "homepage": "https://github.com/jaygradon/ScampBot#readme",
+  "devDependencies": {
+    "eslint": "^3.14.1"
+  },
+  "dependencies": {
+    "discord.js": "^11.0.0"
+  }
+}
