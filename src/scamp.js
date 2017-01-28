@@ -17,9 +17,9 @@ const Scamp = {
         if (file.match(/\.js$/)) {
           delete require.cache[require.resolve(path.join(dir, file))];
           const command = require(path.join(dir, file));
-          if (command.chatter === 'respond') {
+          if (command.listens === 'mention') {
             Scamp.responds[command.match] = command;
-          } else if (command.chatter === 'hear') {
+          } else if (command.listens === 'ambient') {
             Scamp.hears[command.match] = command;
           }
         }
@@ -29,8 +29,6 @@ const Scamp = {
         }
       });
     });
-
-
   },
 
   listen: () => {
@@ -43,17 +41,20 @@ const Scamp = {
         return;
       }
 
-      args = msg.content.slice(config.prefix.length).split(' ');
-      if (args[0] in Scamp.hears) {
-        Scamp.hears[args[0]].func(msg, args);
-      }
-
       if (!msg.content.startsWith(config.prefix)) {
-        return;
-      }
-
-      if (args[0] in Scamp.responds) {
-        Scamp.responds[args[0]].func(msg, args);
+        for (key in Scamp.hears) {
+          const args = key.match(msg.content);
+          if (args) {
+            Scamp.hears[key].func(msg, args);
+          }
+        }
+      } else {
+        for (key in Scamp.responds) {
+          const args = key.match(msg.content.slice(config.prefix.length));
+          if (args) {
+            Scamp.responds[key].func(msg, args);
+          }
+        }
       }
     });
 

@@ -1,7 +1,7 @@
 const ping = {
   help: 'Send a Pong!',
-  chatter: 'respond',
-  match: 'ping',
+  listens: 'mention',
+  match: /^(ping)$/,
   func: (msg, args) => {
     msg.channel.sendMessage('Pong!');
   }
