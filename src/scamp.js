@@ -50,7 +50,8 @@ const Scamp = {
         }
       } else {
         for (key in Scamp.responds) {
-          const args = key.match(msg.content.slice(config.prefix.length));
+          regexKey = new RegExp(key, 'i');
+          const args = msg.content.slice(config.prefix.length).match(regexKey);
           if (args) {
             Scamp.responds[key].func(msg, args);
           }
@@ -63,6 +64,3 @@ const Scamp = {
 };
 
 module.exports = Scamp;
-
-
-
