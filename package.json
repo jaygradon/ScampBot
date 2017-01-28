@@ -4,7 +4,7 @@
   "description": "Chatbot for Discord",
   "main": "scamp.js",
   "scripts": {
-    "start": "node src/scamp.js",
+    "start": "node src/App.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
