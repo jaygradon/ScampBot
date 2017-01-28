@@ -1,9 +1,15 @@
 const ping = {
-  help: 'Send a Pong!',
+  help: 'Poke Scamp!',
   listens: 'mention',
-  match: /^(ping)$/,
+  match: '^(ping|poke|oi|hey)$',
   func: (msg, args) => {
-    msg.channel.sendMessage('Pong!');
+    if (args[0] === 'ping') {
+      msg.channel.sendMessage('Pong!');
+    } else {
+      msg.channel.sendFile('./assets/wolf_angry.gif', 'wolf_angry.gif').then(
+        msg.channel.sendMessage('Grrr...')
+      );
+    }
   }
 };
 
