@@ -1,3 +1,6 @@
+const giphyUtils = require('../utils/giphy/giphyUtils.js');
+const giphyLib = require('../utils/giphy/giphyLibrary.json');
+
 const ping = {
   help: 'Ping Scamp!',
   listens: 'mention',
@@ -6,9 +9,13 @@ const ping = {
     if (args[0] === 'ping') {
       msg.channel.sendMessage('Pong!');
     } else {
-      msg.channel.sendFile('./assets/wolf_angry.gif', 'wolf_angry.gif').then(
-        msg.channel.sendMessage('Grrr...')
-      );
+      giphyUtils.getGifById(giphyLib.wolf_growl).then( (gif) => {
+        msg.channel.sendFile(gif.location, gif.name).then (
+          msg.channel.sendMessage('Grrr...')
+        );
+      }).catch( (err) => {
+        console.log('ERROR: ', err);
+      });
     }
   }
 };
