@@ -1,7 +1,7 @@
-const giphyUtils = require('../utils/giphy/giphyUtils.js');
-const giphyLib = require('../utils/giphy/giphyLibrary.json');
+const giphyUtils = require('../../utils/giphy/giphyUtils.js');
+const giphyLib = require('../../utils/giphy/giphyLibrary.json');
 
-const pingGiphy = {
+const giphyPing = {
   help: 'Ping Giphy!',
   listens: 'mention',
   match: '^ping giphy$',
@@ -11,8 +11,9 @@ const pingGiphy = {
       msg.channel.sendFile(gif.location, gif.name);
     }).catch( (err) => {
       console.log('ERROR: ', err);
+      msg.channel.sendMessage('Urrk, Giphy\'s not being friendly...');
     });
   }
 };
 
-module.exports = pingGiphy;
+module.exports = giphyPing;
