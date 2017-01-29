@@ -6,66 +6,65 @@ const fs = require('fs');
 const path = require('path');
 const Discord = require('discord.js');
 
-const Scamp = {
-  bot: new Discord.Client(),
-  responds: {},
-  hears: {},
+const Scamp = module.exports = {};
 
-  load: (dir) => {
-    fs.readdir(dir, (_, files) => {
-      files.forEach((file) => {
+const bot = new Discord.Client();
+const responds = {};
+const hears = {};
+
+Scamp.load = (dir) => {
+  fs.readdir(dir, (_, files) => {
+    files.forEach((file) => {
+      if (file.match(/\.js$/)) {
         console.log(`Loaded: ${file}`);
-        if (file.match(/\.js$/)) {
-          delete require.cache[require.resolve(path.join(dir, file))];
-          const command = require(path.join(dir, file));
-          if (command.listens === 'mention') {
-            Scamp.responds[command.match] = command;
-          } else if (command.listens === 'ambient') {
-            Scamp.hears[command.match] = command;
-          }
-        }
-
-        if (fs.statSync(path.join(dir, file)).isDirectory()) {
-          Scamp.load(path.join(dir, file));
-        }
-      });
-    });
-  },
-
-  listen: () => {
-    Scamp.bot.on('ready', () => {
-      console.log('I am ready!');
-    });
-
-    Scamp.bot.on('message', msg => {
-      if (msg.author.bot) {
-        return;
-      }
-
-      if (msg.mentions.users.has(config.botID)) {
-        for (key in Scamp.responds) {
-          regexKey = new RegExp(key, 'i');
-          // Need a better way to remove whitespace to left OR right of mention, not both
-          const args = msg.content.replace(`<@${config.botID}>`, '')
-            .replace('  ', ' ')
-            .trim()
-            .match(regexKey);
-          if (args) {
-            Scamp.responds[key].func(msg, args);
-          }
-        }
-      } else {
-        for (key in Scamp.hears) {
-          const args = key.match(msg.content);
-          if (args) {
-            Scamp.hears[key].func(msg, args);
-          }
+        delete require.cache[require.resolve(path.join(dir, file))];
+        const command = require(path.join(dir, file));
+        if (command.listens === 'mention') {
+          responds[command.match] = command;
+        } else if (command.listens === 'ambient') {
+          hears[command.match] = command;
         }
       }
-    });
 
-    Scamp.bot.login(config.token);
-  }
+      if (fs.statSync(path.join(dir, file)).isDirectory()) {
+        Scamp.load(path.join(dir, file));
+      }
+    });
+  });
 };
 
-module.exports = Scamp;
+Scamp.listen = () => {
+  bot.on('ready', () => {
+    console.log('I live again!\n');
+  });
+
+  bot.on('message', msg => {
+    if (msg.author.bot) {
+      return;
+    }
+
+    if (msg.mentions.users.has(config.botID)) {
+      for (key in responds) {
+        regexKey = new RegExp(key, 'i');
+        // Need a better way to remove whitespace to left OR right of mention, not both
+        const args = msg.content.replace(`<@${config.botID}>`, '')
+          .replace('  ', ' ')
+          .trim()
+          .match(regexKey);
+        if (args) {
+          responds[key].func(msg, args);
+        }
+      }
+    } else {
+      for (key in hears) {
+        regexKey = new RegExp(key, 'i');
+        const args = msg.content.match(regexKey);
+        if (args) {
+          hears[key].func(msg, args);
+        }
+      }
+    }
+  });
+
+  bot.login(config.token);
+};
