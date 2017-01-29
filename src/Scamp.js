@@ -46,7 +46,6 @@ Scamp.listen = () => {
     if (msg.mentions.users.has(config.botID)) {
       for (key in responds) {
         regexKey = new RegExp(key, 'i');
-        // Need a better way to remove whitespace to left OR right of mention, not both
         const args = msg.content.replace(`<@${config.botID}>`, '')
           .replace('  ', ' ')
           .trim()
