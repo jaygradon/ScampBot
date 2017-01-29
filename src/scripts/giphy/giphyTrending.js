@@ -10,10 +10,11 @@ const capture = '\\d+|a';
 const giphyTrending = {
   help: 'Get some trending Giphy gifs!',
   listens: 'mention',
-  match: `^(?=.*\\b(?:${giphy})\\b)(?=.*\\b(?:${trending})\\b).*\\b(${capture})\\b.*$`,
+  match: `^(?=.*\\b(?:${giphy})\\b)(?=.*\\b(?:${trending})\\b).*\\b(${capture})?\\b.*$`,
   func: (msg, args) => {
     let numGifs = args[1];
-    numGifs === 'a' ? numGifs = 1 : numGifs = numGifs;
+    numGifs = numGifs === 'a' ? 1 : numGifs; // If a, num = 1
+    numGifs = typeof numGifs === 'number' ? numGifs : 3; // If unset, num = 3 (default)
     if (numGifs > MAX_GIFS) {
       const min = 3;
       numGifs = Math.floor(Math.random() * (MAX_GIFS - min + 1)) + min;
