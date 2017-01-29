@@ -1,5 +1,5 @@
 const ping = {
-  help: 'Poke Scamp!',
+  help: 'Ping Scamp!',
   listens: 'mention',
   match: '^(ping|poke|oi|hey)$',
   func: (msg, args) => {
