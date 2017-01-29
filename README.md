@@ -2,6 +2,17 @@
 
 ScampBot is a chatbot for Discord.  It doesn't do much right now.
 
+## Integrations
+
+ - Complete
+   - Err...  
+ - Partial
+   - Giphy
+ - Planned
+   - Reddit
+   - Pandora
+   - Github
+   
 ## Setup
 
 ### Recommended IDE & Plugins
@@ -13,7 +24,7 @@ ScampBot is a chatbot for Discord.  It doesn't do much right now.
    - *ESLint* - Linter to keep your codebase of quality
    - *EditorConfig for VSCode* - Ensure consistent code styling
 
-### Project
+### Making your ScampBot
 
  1. Fork the ScampBot repository
  2. Run `npm install` in the repository directory with node installed
