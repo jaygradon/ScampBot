@@ -14,6 +14,7 @@ const Scamp = {
   load: (dir) => {
     fs.readdir(dir, (_, files) => {
       files.forEach((file) => {
+        console.log(`Loaded: ${file}`);
         if (file.match(/\.js$/)) {
           delete require.cache[require.resolve(path.join(dir, file))];
           const command = require(path.join(dir, file));
@@ -41,19 +42,23 @@ const Scamp = {
         return;
       }
 
-      if (!msg.content.startsWith(config.prefix)) {
+      if (msg.mentions.users.has(config.botID)) {
+        for (key in Scamp.responds) {
+          regexKey = new RegExp(key, 'i');
+          // Need a better way to remove whitespace to left OR right of mention, not both
+          const args = msg.content.replace(`<@${config.botID}>`, '')
+            .replace('  ', ' ')
+            .trim()
+            .match(regexKey);
+          if (args) {
+            Scamp.responds[key].func(msg, args);
+          }
+        }
+      } else {
         for (key in Scamp.hears) {
           const args = key.match(msg.content);
           if (args) {
             Scamp.hears[key].func(msg, args);
-          }
-        }
-      } else {
-        for (key in Scamp.responds) {
-          regexKey = new RegExp(key, 'i');
-          const args = msg.content.slice(config.prefix.length).match(regexKey);
-          if (args) {
-            Scamp.responds[key].func(msg, args);
           }
         }
       }
