@@ -12,6 +12,8 @@ ScampBot is a chatbot for Discord.  It doesn't do much right now.
    - Reddit
    - Pandora
    - Github
+   - Tomo-chan
+   - Gaming references/encyclopedia (ESO, Fallout, Witcher, etc.)
    
 ## Setup
 
