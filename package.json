@@ -1,6 +1,6 @@
 {
   "name": "scampbot",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "description": "Chatbot for Discord",
   "main": "scamp.js",
   "scripts": {
