@@ -5,11 +5,11 @@ const giphyPing = {
   help: 'Ping Giphy!',
   listens: 'mention',
   match: '^ping giphy$',
-  func: (msg, args) => {
+  func: (msg, args) => { // eslint-disable-line no-unused-vars
     msg.channel.sendMessage('Giphy!');
-    giphyUtils.getGifById(giphyLib.wolf_growl).then( (gif) => {
+    giphyUtils.getGifById(giphyLib.wolf_growl).then((gif) => {
       msg.channel.sendFile(gif.location, gif.name);
-    }).catch( (err) => {
+    }).catch((err) => {
       console.log('ERROR: ', err);
       msg.channel.sendMessage('Urrk, Giphy\'s not being friendly...');
     });
