@@ -13,9 +13,9 @@ const giphyTranslate = {
     const phrase = args[1]
       .slice(1, -1) // Remove starting and ending quotes
       .trim(); // Clean up spaces
-    giphyUtils.getGifByPhrase(phrase).then( (gif) => {
+    giphyUtils.getGifByPhrase(phrase).then((gif) => {
       msg.channel.sendFile(gif.location, gif.name);
-    }).catch( (err) => {
+    }).catch((err) => {
       console.log('ERROR: ', err);
       msg.channel.sendMessage('Hmm, Giphy\'s translation skills aren\'t up to that right now...');
     });

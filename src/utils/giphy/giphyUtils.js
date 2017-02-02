@@ -10,7 +10,7 @@ giphy.translate = Promise.promisify(Giphy.translate);
 giphy.trending = Promise.promisify(Giphy.trending);
 
 giphyUtils.getGifById = (gifId) => {
-  return new Promise ( (resolve, reject) => {
+  return new Promise ((resolve, reject) => {
     giphy.gif({ id: gifId }).then( (packet, err) => {
       if (err) {
         reject(err);
@@ -26,7 +26,7 @@ giphyUtils.getGifById = (gifId) => {
 
 giphyUtils.getGifByPhrase = (phrase) => {
   phrase = phrase.replace(' ', '+');
-  return new Promise ( (resolve, reject) => {
+  return new Promise ((resolve, reject) => {
     giphy.translate({ s: phrase }).then( (packet, err) => {
       if (err) {
         reject(err);
@@ -41,7 +41,7 @@ giphyUtils.getGifByPhrase = (phrase) => {
 };
 
 giphyUtils.getGifsTrending = (numGifs = 3) => {
-  return new Promise ( (resolve, reject) => {
+  return new Promise ((resolve, reject) => {
     giphy.trending({ limit: numGifs }).then( (packet, err) => {
       if (err) {
         reject(err);

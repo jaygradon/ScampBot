@@ -3,8 +3,8 @@ const giphyUtils = require('../../utils/giphy/giphyUtils.js');
 const MAX_GIFS = 5;
 
 // Regex command keywords
-const giphy = 'giphy|gif|gifs';
-const trending = 'trendy?|trending';
+const giphy = 'giphy|gifs?';
+const trending = 'trend(?:y|ing)?';
 const capture = '\\d+|a';
 
 const giphyTrending = {
