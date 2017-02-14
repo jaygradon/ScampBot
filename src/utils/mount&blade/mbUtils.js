@@ -6,11 +6,12 @@ const mbUtils = module.exports = {};
 
 let currentIndex = '';
 let index = {};
-let goods = [];
 
 const indexTemplate = {
   locations: {
-    global: {}
+    global: {
+      goods: {}
+    }
   }
 };
 
@@ -47,6 +48,10 @@ const goodLocalTemplate = {
   }
 };
 
+const updateIndex = () => {
+  fs.writeFileSync(path.join(__dirname, 'indices', currentIndex, 'index.json'), JSON.stringify(index, null, 2), 'utf-8');
+};
+
 mbUtils.createIndex = (name) => {
   return new Promise((resolve, reject) => {
     const indexDir = path.join(__dirname, 'indices', name);
@@ -56,10 +61,8 @@ mbUtils.createIndex = (name) => {
       } else {
         // eslint-disable-next-line max-len
         fs.writeFileSync(path.join(indexDir, 'index.json'), JSON.stringify(indexTemplate, null, 2), 'utf-8');
-        fs.writeFileSync(path.join(indexDir, 'goods.json'), JSON.stringify([], null, 2), 'utf-8');
         currentIndex = name;
         index = require(path.join(indexDir, 'index.json'));
-        goods = require(path.join(indexDir, 'goods.json'));
         resolve();
       }
     });
@@ -76,7 +79,6 @@ mbUtils.loadIndex = (name) => {
       if (exists) {
         currentIndex = name;
         index = require(path.join(indexDir, 'index.json'));
-        goods = require(path.join(indexDir, 'goods.json'));
         resolve();
       } else {
         reject();
@@ -84,4 +86,20 @@ mbUtils.loadIndex = (name) => {
     });
   });
 };
+
+mbUtils.addGood = (good, trueValue=0) => {
+  return new Promise((resolve, reject) => {
+    if (currentIndex === '') {
+      reject('NO_INDEX');
+    } else if (good in index.locations.global.goods) {
+      reject('ALREADY_REGISTERED');
+    } else {
+      index.locations.global.goods[good] = Object.assign({}, goodGlobalTemplate);
+      index.locations.global.goods[good].value.true = trueValue;
+      updateIndex();
+      resolve();
+    }
+  });
+};
+
 
