@@ -3,7 +3,7 @@ const giphyUtils = require('../../utils/giphy/giphyUtils.js');
 // Regex command keywords
 const giphy = 'giphy|gif';
 const translate = 'translate|get|grab|find|make|look';
-const capture = '"...+"|\'...+\'';
+const capture = '"...+"|\'...*\'';
 
 const giphyTranslate = {
   help: 'Translate a phrase to a Giphy gif!',
