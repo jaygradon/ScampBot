@@ -102,4 +102,16 @@ mbUtils.addGood = (good, trueValue=0) => {
   });
 };
 
-
+mbUtils.addLocation = (location) => {
+  return new Promise((resolve, reject) => {
+    if (currentIndex === '') {
+      reject('NO_INDEX');
+    } else if (location in index.locations) {
+      reject('ALREADY_REGISTERED');
+    } else {
+      index.locations[location] = {};
+      updateIndex();
+      resolve();
+    }
+  });
+};
