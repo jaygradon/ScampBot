@@ -2,7 +2,7 @@ const mbUtils = require('../../utils/mount&blade/mbUtils.js');
 
 const index = 'mb(?:i|\\s+index)?|mount\\s*(?:&|and)\\s*blade(?:\\s*index)?';
 const create = 'create|new|make';
-const capture = '"...+"|\'...*\'';
+const capture = '"\\w\\w\\w+"|\'\\w\\w\\w+\'';
 
 const mbCreateIndex = {
   help: 'Create a Mount&Blade Trading Index!',

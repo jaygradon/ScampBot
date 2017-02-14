@@ -4,7 +4,7 @@ const path = require('path');
 
 const mbUtils = module.exports = {};
 
-let currentIndex = 'warband';
+let currentIndex = '';
 let index = {};
 let goods = [];
 
@@ -54,13 +54,34 @@ mbUtils.createIndex = (name) => {
       if (err) {
         reject(err);
       } else {
-        fs.writeFile(path.join(indexDir, 'index.json'), JSON.stringify(indexTemplate, null, 2), 'utf-8');
-        fs.writeFile(path.join(indexDir, 'goods.json'), JSON.stringify([], null, 2), 'utf-8');
-        index = indexTemplate;
-        goods = [];
+        // eslint-disable-next-line max-len
+        fs.writeFileSync(path.join(indexDir, 'index.json'), JSON.stringify(indexTemplate, null, 2), 'utf-8');
+        fs.writeFileSync(path.join(indexDir, 'goods.json'), JSON.stringify([], null, 2), 'utf-8');
         currentIndex = name;
+        index = require(path.join(indexDir, 'index.json'));
+        goods = require(path.join(indexDir, 'goods.json'));
         resolve();
       }
     });
   });
 };
+
+mbUtils.loadIndex = (name) => {
+  return new Promise((resolve, reject) => {
+    if (currentIndex === name) {
+      reject('LOADED');
+    }
+    const indexDir = path.join(__dirname, 'indices', name);
+    fs.exists(indexDir, (exists) => {
+      if (exists) {
+        currentIndex = name;
+        index = require(path.join(indexDir, 'index.json'));
+        goods = require(path.join(indexDir, 'goods.json'));
+        resolve();
+      } else {
+        reject();
+      }
+    });
+  });
+};
+
