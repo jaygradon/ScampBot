@@ -111,23 +111,26 @@ mbUtils.addLocation = (location) => {
     } else if (location in index.locations) {
       reject('ALREADY_REGISTERED');
     } else {
-      index.locations[location] = {};
+      index.locations[location] = { goods: {} };
       updateIndex();
       resolve();
     }
   });
 };
 
-mbUtils.addPrice = (good, price, priceType='buy', location='global') => {
+mbUtils.addPrice = (name, price, priceType='buy', location='global') => {
   return new Promise((resolve, reject) => {
+    let good;
     if (currentIndex === '') {
       reject('NO_INDEX');
-    } else if (good in index.locations.global.goods) {
-      if (good in index.locations[location].goods) {
-        good = index.locations[location].goods[good];
+    } else {
+      if (name in index.locations[location].goods) {
+        good = index.locations[location].goods[name];
       } else {
-        good = Object.assign({}, goodLocalTemplate);
+        index.locations[location].goods[name] = Object.assign({}, goodLocalTemplate);
+        good = index.locations[location].goods[name];
       }
+
       good.value[priceType].lowest =
         (price < good.value[priceType].lowest || good.value[priceType].lowest === 0)
           ? price
@@ -136,13 +139,20 @@ mbUtils.addPrice = (good, price, priceType='buy', location='global') => {
         (price > good.value[priceType].highest)
           ? price
           : good.value[priceType].highest;
+
       if (location !== 'global') {
+        mbUtils.addPrice(name, price, priceType);
+        good.value[priceType].historic =
+          ((good.value[priceType].historic * good.value[priceType].prices) + price)
+            / (good.value[priceType].prices + 1);
+        good.value[priceType].recent = price;
+        good.value[priceType].prices++;
+      } else {
 
       }
+
       updateIndex();
       resolve();
-    } else {
-      reject('GOOD_NOT_REGISTERED');
     }
   });
 };

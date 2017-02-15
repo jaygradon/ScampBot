@@ -20,6 +20,7 @@ const mbAddGood = {
         msg.channel.sendMessage('Slow down, that good\'s already registered');
       } else {
         msg.channel.sendMessage('Well that\'s not working');
+        console.log('ERROR: ', err);
       }
     });
   }

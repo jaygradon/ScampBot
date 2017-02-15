@@ -19,6 +19,7 @@ const mbAddLocation = {
         msg.channel.sendMessage('Slow down, that location\'s already registered');
       } else {
         msg.channel.sendMessage('Well that\'s not working');
+        console.log('ERROR: ', err);
       }
     });
   }

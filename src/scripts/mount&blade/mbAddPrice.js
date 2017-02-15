@@ -28,17 +28,17 @@ const findLocation = (args1, args2) => {
 const mbAddGood = {
   help: 'Add a good to a Mount&Blade Trading Index!',
   listens: 'mention',
-  match: `^(?=.*\\b(?:${index})\\b)(?=.*\\b(?:(?:${price})|(${buy}|${sell}))\\b)(?=.*\\b(${value})\\b).*\\B(${capture})\\B(?:.*\\B(${capture})\\B)?.*$`,
+  match: `^(?=.*\\b(?:${index})\\b)(?=.*\\b(?:(?:${price})|(${buy}|${sell}))\\b)(?=.*\\b(${value})\\b)(?:.*\\B(${capture})\\B)?.*\\B(${capture})\\B.*$`,
   func: (msg, args) => {
-
     let type = undefined;
     if (args[1]) {
       type = args[1].match(new RegExp(sell, 'i')) ? 'sell' : 'buy';
     }
     const good = findGood(args[3], args[4]);
     const location = findLocation(args[3], args[4]);
+    const price = parseInt(args[2]);
 
-    mbUtils.addPrice(good, args[2], type, location).then(() => {
+    mbUtils.addPrice(good, price, type, location).then(() => {
       if (location) {
         msg.channel.sendMessage(`Added price for ${good} to ${location}`);
       } else {
@@ -47,10 +47,9 @@ const mbAddGood = {
     }).catch((err) => {
       if (err === 'NO_INDEX') {
         msg.channel.sendMessage('You aren\'t using an index dummy');
-      } else if (err === 'GOOD_NOT_REGISTERED') {
-        msg.channel.sendMessage('Slow down, that good isn\'t registered yet');
       } else {
         msg.channel.sendMessage('I might have broken that...');
+        console.log('ERROR: ', err);
       }
     });
   }

@@ -1,7 +1,7 @@
 const mbUtils = require('../../utils/mount&blade/mbUtils.js');
 
 const index = 'mb(?:i|\\s*index)?|mount\\s*(?:&|and)\\s*blade(?:\\s*index)?';
-const create = 'create|new|make';
+const create = 'create|make';
 const capture = '"\\w\\w\\w+"|\'\\w\\w\\w+\'';
 
 const mbCreateIndex = {
@@ -16,8 +16,8 @@ const mbCreateIndex = {
           msg.channel.sendMessage(`Uhmm, the index '${args[1].toLowerCase().slice(1, -1)}' already exists`);
         } else {
           msg.channel.sendMessage('Don\'t feel like it.');
+          console.log('ERROR: ', err);
         }
-        console.log('ERROR: ', err);
     });
   }
 };
