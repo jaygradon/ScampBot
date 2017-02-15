@@ -175,6 +175,18 @@ mbUtils.addPrice = (name, price, priceType='buy', location='global') => {
   });
 };
 
+mbUtils.getGood = (name) => {
+  return new Promise((resolve, reject) => {
+    if (index === '') {
+      reject('NO_INDEX');
+    } else if (name in index.locations.global.goods) {
+      resolve(index.locations.global.goods[name]);
+    } else {
+      reject('NOT_REGISTERED');
+    }
+  });
+};
+
 mbUtils.isGood = (good) => {
   return (good in index.locations.global.goods);
 };

@@ -25,8 +25,8 @@ const findLocation = (args1, args2) => {
   return undefined;
 };
 
-const mbAddGood = {
-  help: 'Add a good to a Mount&Blade Trading Index!',
+const mbAddPrice = {
+  help: 'Add prices for goods to a Mount&Blade Trading Index!',
   listens: 'mention',
   match: `^(?=.*\\b(?:${index})\\b)(?=.*\\b(?:(?:${price})|(${buy}|${sell}))\\b)(?=.*\\b(${value})\\b)(?:.*\\B(${capture})\\B)?.*\\B(${capture})\\B.*$`,
   func: (msg, args) => {
@@ -55,4 +55,4 @@ const mbAddGood = {
   }
 };
 
-module.exports = mbAddGood;
+module.exports = mbAddPrice;
