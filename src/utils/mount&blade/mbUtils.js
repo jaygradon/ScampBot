@@ -143,12 +143,30 @@ mbUtils.addPrice = (name, price, priceType='buy', location='global') => {
       if (location !== 'global') {
         mbUtils.addPrice(name, price, priceType);
         good.value[priceType].historic =
-          ((good.value[priceType].historic * good.value[priceType].prices) + price)
-            / (good.value[priceType].prices + 1);
+          Math.round(((good.value[priceType].historic * good.value[priceType].prices) + price)
+            / (good.value[priceType].prices + 1));
         good.value[priceType].recent = price;
         good.value[priceType].prices++;
+      } else if (good.value.true === 0) {
+        if (priceType === 'sell') {
+          good.value.sell.recommend =
+            Math.round(good.value.sell.highest -
+              ((good.value.sell.highest - good.value.sell.lowest) / 1.75));
+        } else {
+          good.value.buy.recommend =
+            Math.round(good.value.buy.lowest +
+              ((good.value.buy.highest - good.value.buy.lowest) / 1.75));
+        }
       } else {
-
+        // Assumes potential buy/sell prices drift equally from true
+        const lowerQuart = good.value.true - good.value[priceType].lowest;
+        const upperQuart = good.value[priceType].highest - good.value.true;
+        const priceRange = upperQuart > lowerQuart ? 2 * upperQuart : 2 * lowerQuart;
+        if (priceType === 'sell') {
+          good.value.sell.recommend = Math.round(good.value.sell.highest - (priceRange / 1.75));
+        } else {
+          good.value.buy.recommend = Math.round(good.value.buy.lowest + (priceRange / 1.75));
+        }
       }
 
       updateIndex();

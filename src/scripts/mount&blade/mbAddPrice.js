@@ -40,9 +40,9 @@ const mbAddGood = {
 
     mbUtils.addPrice(good, price, type, location).then(() => {
       if (location) {
-        msg.channel.sendMessage(`Added price for ${good} to ${location}`);
+        msg.channel.sendMessage(`Added price for '${good}' at '${location}'`);
       } else {
-        msg.channel.sendMessage(`Added price for ${good} to index`);
+        msg.channel.sendMessage(`Added price for '${good}' to index`);
       }
     }).catch((err) => {
       if (err === 'NO_INDEX') {

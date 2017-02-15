@@ -9,10 +9,12 @@ const capture = '"\\w\\w\\w+"|\'\\w\\w\\w+\'';
 const mbAddGood = {
   help: 'Add a good to a Mount&Blade Trading Index!',
   listens: 'mention',
-  match: `^(?=.*\\b(?:${index})\\b)(?=.*\\b(?:${add})\\b)(?=.*\\b(?:${good})\\b)(?=.*\\b(${value})\\b)?.*\\B(${capture})\\B.*$`,
+  match: `^(?=.*\\b(?:${index})\\b)(?=.*\\b(?:${add})\\b)(?=.*\\b(?:${good})\\b)(?=.*\\B(${capture})\\B)(?:.*\\b(${value})\\b)?.*$`,
   func: (msg, args) => {
-    mbUtils.addGood(args[2].toLowerCase().slice(1, -1), args[1]).then(() => {
-      msg.channel.sendMessage(`Added the good '${args[2].toLowerCase().slice(1, -1)}' to the current index`);
+    const good = args[1].toLowerCase().slice(1, -1);
+    const value = args[2] ? parseInt(args[2]) : 0;
+    mbUtils.addGood(good, value).then(() => {
+      msg.channel.sendMessage(`Added the good '${args[1].toLowerCase().slice(1, -1)}' to the current index`);
     }).catch((err) => {
       if (err === 'NO_INDEX') {
         msg.channel.sendMessage('You aren\'t using an index dummy');
