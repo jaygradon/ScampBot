@@ -37,13 +37,15 @@ const goodLocalTemplate = {
       lowest: 0,
       highest: 0,
       historic: 0,
-      recent: 0
+      recent: 0,
+      prices: 0
     },
     sell: {
       lowest: 0,
       highest: 0,
       historic: 0,
-      recent: 0
+      recent: 0,
+      prices: 0
     }
   }
 };
@@ -114,4 +116,41 @@ mbUtils.addLocation = (location) => {
       resolve();
     }
   });
+};
+
+mbUtils.addPrice = (good, price, priceType='buy', location='global') => {
+  return new Promise((resolve, reject) => {
+    if (currentIndex === '') {
+      reject('NO_INDEX');
+    } else if (good in index.locations.global.goods) {
+      if (good in index.locations[location].goods) {
+        good = index.locations[location].goods[good];
+      } else {
+        good = Object.assign({}, goodLocalTemplate);
+      }
+      good.value[priceType].lowest =
+        (price < good.value[priceType].lowest || good.value[priceType].lowest === 0)
+          ? price
+          : good.value[priceType].lowest;
+      good.value[priceType].highest =
+        (price > good.value[priceType].highest)
+          ? price
+          : good.value[priceType].highest;
+      if (location !== 'global') {
+
+      }
+      updateIndex();
+      resolve();
+    } else {
+      reject('GOOD_NOT_REGISTERED');
+    }
+  });
+};
+
+mbUtils.isGood = (good) => {
+  return (good in index.locations.global.goods);
+};
+
+mbUtils.isLocation = (location) => {
+  return (location in index.locations);
 };

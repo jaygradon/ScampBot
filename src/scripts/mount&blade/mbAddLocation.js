@@ -8,7 +8,7 @@ const capture = '"\\w\\w\\w+"|\'\\w\\w\\w+\'';
 const mbAddLocation = {
   help: 'Add a location to a Mount&Blade Trading Index!',
   listens: 'mention',
-  match: `^(?=.*\\b(?:${index})\\b)?(?=.*\\b(?:${add})\\b)(?=.*\\b(?:${location})\\b).*\\B(${capture})\\B.*$`,
+  match: `^(?=.*\\b(?:${index})\\b)(?=.*\\b(?:${add})\\b)(?=.*\\b(?:${location})\\b).*\\B(${capture})\\B.*$`,
   func: (msg, args) => {
     mbUtils.addLocation(args[1].toLowerCase().slice(1, -1)).then(() => {
       msg.channel.sendMessage(`Added the location '${args[1].toLowerCase().slice(1, -1)}' to the current index`);
