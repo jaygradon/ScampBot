@@ -96,7 +96,7 @@ mbUtils.addGood = (good, trueValue=0) => {
     } else if (good in index.locations.global.goods) {
       reject('ALREADY_REGISTERED');
     } else {
-      index.locations.global.goods[good] = Object.assign({}, goodGlobalTemplate);
+      index.locations.global.goods[good] = JSON.parse(JSON.stringify(goodGlobalTemplate));
       index.locations.global.goods[good].value.true = trueValue;
       updateIndex();
       resolve();
@@ -127,10 +127,9 @@ mbUtils.addPrice = (name, price, priceType='buy', location='global') => {
       if (name in index.locations[location].goods) {
         good = index.locations[location].goods[name];
       } else {
-        index.locations[location].goods[name] = Object.assign({}, goodLocalTemplate);
+        index.locations[location].goods[name] = JSON.parse(JSON.stringify(goodLocalTemplate));
         good = index.locations[location].goods[name];
       }
-
       good.value[priceType].lowest =
         (price < good.value[priceType].lowest || good.value[priceType].lowest === 0)
           ? price
@@ -168,7 +167,6 @@ mbUtils.addPrice = (name, price, priceType='buy', location='global') => {
           good.value.buy.recommend = Math.round(good.value.buy.lowest + (priceRange / 1.75));
         }
       }
-
       updateIndex();
       resolve();
     }
@@ -200,11 +198,11 @@ mbUtils.recommendLocations = (good) => {
         }
       }
       sortable.sort((location1, location2) => {
-        return location2[1].goods[good].value.buy.historic - location1[1].goods[good].value.buy.historic;
+        return location1[1].goods[good].value.buy.historic - location2[1].goods[good].value.buy.historic;
       });
       locations.push(sortable.slice(0,3));
       sortable.sort((location1, location2) => {
-        return location1[1].goods[good].value.sell.historic - location2[1].goods[good].value.sell.historic;
+        return location2[1].goods[good].value.sell.historic - location1[1].goods[good].value.sell.historic;
       });
       locations.push(sortable.slice(0,3));
       resolve(locations);
