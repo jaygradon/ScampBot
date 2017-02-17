@@ -187,6 +187,33 @@ mbUtils.getGood = (name) => {
   });
 };
 
+mbUtils.recommendLocations = (good) => {
+  return new Promise((resolve, reject) => {
+    if (currentIndex === '') {
+      reject('NO_INDEX');
+    } else if (good in index.locations.global.goods) {
+      const locations = [];
+      const sortable = [];
+      for (const location in index.locations) {
+        if (index.locations[location].goods[good] && location !== 'global') {
+          sortable.push([location, index.locations[location]]);
+        }
+      }
+      sortable.sort((location1, location2) => {
+        return location2[1].goods[good].value.buy.historic - location1[1].goods[good].value.buy.historic;
+      });
+      locations.push(sortable.slice(0,3));
+      sortable.sort((location1, location2) => {
+        return location1[1].goods[good].value.sell.historic - location2[1].goods[good].value.sell.historic;
+      });
+      locations.push(sortable.slice(0,3));
+      resolve(locations);
+    } else {
+      reject('NOT_REGISTERED');
+    }
+  });
+};
+
 mbUtils.isGood = (good) => {
   return (good in index.locations.global.goods);
 };
