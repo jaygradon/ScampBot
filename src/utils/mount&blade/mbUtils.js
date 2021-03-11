@@ -73,9 +73,6 @@ mbUtils.createIndex = (name) => {
 
 mbUtils.loadIndex = (name) => {
   return new Promise((resolve, reject) => {
-    if (currentIndex === name) {
-      reject('LOADED');
-    }
     const indexDir = path.join(__dirname, 'indices', name);
     fs.exists(indexDir, (exists) => {
       if (exists) {
@@ -123,7 +120,7 @@ mbUtils.addPrice = (name, price, priceType='buy', location='global') => {
     let good;
     if (currentIndex === '') {
       reject('NO_INDEX');
-    } else {
+    } else if (name in index.locations.global.goods) {
       if (name in index.locations[location].goods) {
         good = index.locations[location].goods[name];
       } else {
@@ -150,11 +147,11 @@ mbUtils.addPrice = (name, price, priceType='buy', location='global') => {
         if (priceType === 'sell') {
           good.value.sell.recommend =
             Math.round(good.value.sell.highest -
-              ((good.value.sell.highest - good.value.sell.lowest) / 1.75));
+              ((good.value.sell.highest - good.value.sell.lowest) / 1.9));
         } else {
           good.value.buy.recommend =
             Math.round(good.value.buy.lowest +
-              ((good.value.buy.highest - good.value.buy.lowest) / 1.75));
+              ((good.value.buy.highest - good.value.buy.lowest) / 1.9));
         }
       } else {
         // Assumes potential buy/sell prices drift equally from true
@@ -162,13 +159,15 @@ mbUtils.addPrice = (name, price, priceType='buy', location='global') => {
         const upperQuart = good.value[priceType].highest - good.value.true;
         const priceRange = upperQuart > lowerQuart ? 2 * upperQuart : 2 * lowerQuart;
         if (priceType === 'sell') {
-          good.value.sell.recommend = Math.round(good.value.sell.highest - (priceRange / 1.75));
+          good.value.sell.recommend = Math.round(good.value.sell.highest - (priceRange / 1.9));
         } else {
-          good.value.buy.recommend = Math.round(good.value.buy.lowest + (priceRange / 1.75));
+          good.value.buy.recommend = Math.round(good.value.buy.lowest + (priceRange / 1.9));
         }
       }
       updateIndex();
       resolve();
+    } else {
+      reject('NOT_REGISTERED');
     }
   });
 };

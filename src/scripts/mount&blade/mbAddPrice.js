@@ -47,6 +47,8 @@ const mbAddPrice = {
     }).catch((err) => {
       if (err === 'NO_INDEX') {
         msg.channel.sendMessage('You aren\'t using an index dummy');
+      } else if (err === 'NOT_REGISTERED') {
+        msg.channel.sendMessage('Haven\'t heard of that good');
       } else {
         msg.channel.sendMessage('I might have broken that...');
         console.log('ERROR: ', err);

@@ -24,7 +24,7 @@ const mbAddPrice = {
         });
       });
 
-      const header = `__${name} Trading Recommendations:__`;
+      const header = `__${name} Advisor:__`;
       let buyRec = '';
       locations[0].forEach((location) => {
         buyRec += `${location[0]} (${location[1].goods[good].value.buy.historic}), `;

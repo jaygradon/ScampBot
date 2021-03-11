@@ -12,11 +12,7 @@ const mbLoadIndex = {
     mbUtils.loadIndex(args[1].toLowerCase().slice(1, -1)).then(() => {
       msg.channel.sendMessage(`Loaded up the '${args[1].toLowerCase().slice(1, -1)}' Mount&Blade index`);
     }).catch((err) => {
-      if (err === 'LOADED') {
-        msg.channel.sendMessage(`The '${args[1].toLowerCase().slice(1, -1)}' Mount&Blade index is already loaded doofus`);
-      } else {
-        msg.channel.sendMessage(`Uhhh, I can't find any Mount&Blade index going by '${args[1].toLowerCase().slice(1, -1)}'`);
-      }
+      msg.channel.sendMessage(`Uhhh, I can't find any Mount&Blade index going by '${args[1].toLowerCase().slice(1, -1)}'`);
     });
   }
 };

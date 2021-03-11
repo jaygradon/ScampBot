@@ -17,7 +17,7 @@ const mbGetGood = {
         });
       });
       const table = `
-__${name} Global Prices:__
+__${name}(${good.value.true}) Prices:__
 Buying:   ${good.value.buy.lowest} - ${good.value.buy.highest}
 Selling:   ${good.value.sell.lowest} - ${good.value.sell.highest}
 __*Buy\@${good.value.buy.recommend}*__  __*Sell\@${good.value.sell.recommend}*__
